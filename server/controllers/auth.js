@@ -1,5 +1,6 @@
 import pool from "../db.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 export const register = (req, res) => {
   const q = "SELECT * FROM users WHERE username = $1";
   pool.query(q, [req.body.username], (error, results) => {
@@ -29,8 +30,33 @@ export const register = (req, res) => {
   });
 };
 export const login = (req, res) => {
-  res.send("login");
+  const q = "SELECT * FROM users WHERE username = $1";
+
+  pool.query(q, [req.body.username], (error, results) => {
+    if (error) res.status(500).json(err);
+    if (results.rows.length == 0) return res.status(404).send(`User not found`);
+
+    const checkPassword = bcrypt.compareSync(
+      req.body.password,
+      results.rows[0].password
+    );
+    if (!checkPassword) return res.status(400).send("Wrong password");
+    const token = jwt.sign({ id: results.rows[0].id }, "secretkey");
+    const { password, ...others } = results.rows[0];
+    res
+      .cookie("accessToken", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json(others);
+  });
 };
 export const logout = (req, res) => {
-  res.send("logout");
+  res
+    .clearCookie("accessToken", {
+      security: true,
+      sameSite: "none",
+    })
+    .status(200)
+    .json("User has been logged out");
 };
