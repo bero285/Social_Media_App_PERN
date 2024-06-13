@@ -44,7 +44,7 @@ export const Profile = () => {
             </a>
           </div>
 
-          <dic className="center">
+          <div className="center">
             <span>Jane Doe</span>
             <div className="info">
               <div className="item">
@@ -57,7 +57,7 @@ export const Profile = () => {
               </div>
             </div>
             <button>follow</button>
-          </dic>
+          </div>
           <div className="right">
             <EmailOutlinedIcon />
             <MoreVertIcon />
