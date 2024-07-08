@@ -30,7 +30,6 @@ export const register = (req, res) => {
   });
 };
 export const login = (req, res) => {
-  console.log("aaaaaaaaaaaa");
   const q = "SELECT * FROM users WHERE username = $1";
 
   pool.query(q, [req.body.username], (error, results) => {
