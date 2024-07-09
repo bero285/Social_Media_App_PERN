@@ -7,7 +7,7 @@ export const Posts = () => {
     queryKey: ["posts"],
     queryFn: () => makeRequest.get("/posts").then((res) => res.data),
   });
-
+  
   if (isPending) return "Loading...";
 
   if (error) return "An error has occurred: " + error.message;

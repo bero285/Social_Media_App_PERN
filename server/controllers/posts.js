@@ -9,7 +9,7 @@ export const getPosts = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfo) => {
     if (err) return res.status(401).json("Token is not valid");
     const q = `SELECT p.*, u.id as userId,name,profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) 
-    LEFT JOIN relationships AS r ON (p.userID = r.followedUserId) WHERE r.followerUserId = $1 OR p.userId = $1 ORDER BY p.createdAT DESC
+    LEFT JOIN relationships AS r ON (p.userID = r.followedUserId) WHERE r.followerUserId = $1 OR p.userId = $1 ORDER BY p.createdAt DESC
     `;
 
     pool.query(q, [userInfo.id], (error, results) => {

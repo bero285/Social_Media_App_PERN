@@ -8,8 +8,19 @@ import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { makeRequest } from "../../axios";
 const Share = () => {
   const [file, setFile] = useState(null);
-  const [description, setDescription] = useState(null);
+  const [description, setDescription] = useState("");
   const { currentUser } = useContext(AuthContext);
+
+  const upload = async (e) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await makeRequest.post("/upload", formData);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const queryClient = useQueryClient();
 
@@ -21,22 +32,32 @@ const Share = () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    mutation.mutate({ description });
+    let imgUrl = "";
+    if (file) imgUrl = await upload();
+    mutation.mutate({ description: description, img: imgUrl });
     setDescription("");
+    setFile(null);
   };
   return (
     <div className="share">
       <div className="container">
         <div className="top">
-          <img src={currentUser.profilePic} alt="" />
-          <input
-            type="text"
-            placeholder={`What's on your mind ${currentUser.name}?`}
-            onChange={(e) => setDescription(e.target.value)}
-            value={description}
-          />
+          <div className="left">
+            <img src={currentUser.profilePic} alt="" />
+            <input
+              type="text"
+              placeholder={`What's on your mind ${currentUser.name}?`}
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+          </div>
+          <div className="right">
+            {file && (
+              <img className="file" src={URL.createObjectURL(file)} alt="" />
+            )}
+          </div>
         </div>
         <hr />
         <div className="bottom">
