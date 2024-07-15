@@ -46,7 +46,7 @@ export const Post = ({ post }) => {
             <img src={post.profilePic} alt="" />
             <div className="details">
               <Link
-                to={`/profile/${post.userId}`}
+                to={`/profile/${post.userid}`}
                 className="name"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
