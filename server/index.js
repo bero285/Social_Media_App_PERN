@@ -3,6 +3,7 @@ const app = express();
 
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
+import relationshipRoutes from "./routes/relationship.js";
 import postRoutes from "./routes/posts.js";
 import commentRoutes from "./routes/comments.js";
 import likeRoutes from "./routes/likes.js";
@@ -35,6 +36,7 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
 });
 
 app.use("/api/users", userRoutes);
+app.use("/api/relationship", relationshipRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/likes", likeRoutes);

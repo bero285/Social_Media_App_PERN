@@ -19,13 +19,39 @@ export const Profile = () => {
   const { currentUser } = useContext(AuthContext);
 
   const userId = parseInt(useLocation().pathname.split("/")[2]);
-
+  const queryClient = useQueryClient();
+  const { data: relationshipData, isPending: relationshipIsLoading } = useQuery(
+    {
+      queryKey: ["relationship", userId],
+      queryFn: () =>
+        makeRequest
+          .get(`/relationship?followedUserId=${userId}`)
+          .then((res) => res.data),
+    }
+  );
   const { isPending, error, data } = useQuery({
     queryKey: ["user", userId],
     queryFn: () =>
       makeRequest.get(`/users/find/${userId}`).then((res) => res.data),
   });
+
+  const mutation = useMutation({
+    mutationFn: (following) => {
+      if (following) {
+        return makeRequest.delete(`/relationship?userId=${userId}`);
+      } else {
+        return makeRequest.post("/relationship", { userId: userId });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["relationship", userId] });
+    },
+  });
+  const handleFollow = () => {
+    mutation.mutate(relationshipData.includes(currentUser.id));
+  };
   if (isPending) return <h1>Loading...</h1>;
+
   return (
     <div className="profile">
       <div className="images">
@@ -74,10 +100,16 @@ export const Profile = () => {
                 <span>{data.website}</span>
               </div>
             </div>
-            {userId === currentUser.id ? (
+            {relationshipIsLoading ? (
+              "Loading"
+            ) : userId === currentUser.id ? (
               <button>update</button>
             ) : (
-              <button>follow</button>
+              <button onClick={handleFollow}>
+                {relationshipData.includes(currentUser.id)
+                  ? "unfollow"
+                  : "follow"}
+              </button>
             )}
           </div>
           <div className="right">
@@ -85,7 +117,7 @@ export const Profile = () => {
             <MoreVertIcon />
           </div>
         </div>
-        <Posts />
+        <Posts userId={userId} />
       </div>
     </div>
   );
