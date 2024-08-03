@@ -7,11 +7,11 @@ export const getPosts = (req, res) => {
   if (!token) return res.status(401).json("Unauthenticated");
 
   jwt.verify(token, "secretkey", (err, userInfo) => {
-    if (err) return res.status(401).json("Token is not valid");
+    if (err) return res.status(403).json("Token is not valid");
     let q;
 
     if (userId && userId !== "undefined") {
-      q = `SELECT p.*, u.id as userId,name,profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = $1
+      q = `SELECT p.*, u.id as userId,name,profilePic FROM posts AS p JOIN users AS u ON (u.id = p.userId) WHERE p.userId = $1 ORDER BY p.createdAt DESC
     
       `;
       pool.query(q, [userId], (error, results) => {
@@ -45,9 +45,28 @@ export const addPost = (req, res) => {
     ];
 
     pool.query(q, values, (error, results) => {
-      // if (error) return res.status(500).json("Server error");
-      if (error) throw error;
+      if (error) return res.status(500).json("Server error");
       res.status(200).json("Post has been created successfully");
+    });
+  });
+};
+
+export const deletePost = (req, res) => {
+  console.log("here");
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json("Unauthenticated");
+
+  jwt.verify(token, "secretkey", (err, userInfo) => {
+    if (err) return res.status(401).json("Token is not valid");
+    const q = "DELETE FROM posts WHERE id=$1 AND userId=$2";
+
+    pool.query(q, [req.query.postId, userInfo.id], (error, results) => {
+      console.log(req.query.postId);
+      if (error) return res.status(500).json("Server error");
+      if (results.rowCount > 0) {
+        return res.status(200).json("Post has been deleted successfully");
+      }
+      return res.status(403).json("You can delete only your post");
     });
   });
 };

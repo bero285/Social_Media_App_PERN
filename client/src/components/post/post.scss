@@ -13,7 +13,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-   
+            .menu{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                button{
+                    cursor: pointer;
+                }
+            }
         .userInfo{
             display: flex;
             gap:20px;
@@ -24,6 +31,7 @@
                 object-fit: cover;
                 overflow: hidden;
             }
+          
             .details{
                 display: flex;
                 flex-direction: column;

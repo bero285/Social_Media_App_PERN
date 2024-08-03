@@ -27,6 +27,7 @@ export const Post = ({ post }) => {
   });
 
   const [commentOpen, setCommentOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const { isPending, error, data } = useQuery({
     queryKey: ["likes", post.id],
@@ -36,6 +37,19 @@ export const Post = ({ post }) => {
 
   const handleLike = () => {
     mutation.mutate(data.includes(currentUser.id));
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: (postId) => {
+      return makeRequest.delete(`/posts?postId=${postId}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+  });
+  const handleClick = async () => {
+    deleteMutation.mutate(post.id);
+    setMenuOpen(false);
   };
 
   return (
@@ -55,7 +69,16 @@ export const Post = ({ post }) => {
               <span className="date">{moment(post.createdat).fromNow()}</span>
             </div>
           </div>
-          <MoreHorizIcon />
+          <div className="menu">
+            <MoreHorizIcon
+              onClick={() => {
+                setMenuOpen(!menuOpen);
+              }}
+            />
+            {menuOpen && post.userid === currentUser.id && (
+              <button onClick={handleClick}>delete</button>
+            )}
+          </div>
         </div>
         <div className="content">
           <p>{post.description}</p>
