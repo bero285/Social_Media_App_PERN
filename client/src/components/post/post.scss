@@ -17,6 +17,9 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                .moreHorizon{
+                    cursor: pointer;
+                }
                 button{
                     cursor: pointer;
                 }

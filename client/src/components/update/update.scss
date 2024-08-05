@@ -5,9 +5,48 @@
     left:0;
     right: 0;
     margin:auto;
-    width: 50%;
-    height: 50%;
+    width: 30%;
+    height: fit-content;
     background-color: white;
     padding:50px;
+    display: flex;
+    flex-direction: column;
+    border:1px solid black;
+    gap:10px;
+    h2{
+        margin:0;
+        padding: 0;
+    }
+    form{
+        display: flex;
+        flex-direction: column;
+        gap:10px;
+        .inputContainer{
+            display: flex;
+            flex-direction: row;
+            gap:10px;
+        }
+        button{
+            width: 100px;
+            height:30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgb(131, 202, 243);
+            color:white;
+            border:0;
+            cursor: pointer;
+        }
+    }button{
+        width: 100px;
+        height:30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgb(226, 54, 24);
+        color:white;
+        border:0;
+        cursor: pointer;
+    }
    
 }

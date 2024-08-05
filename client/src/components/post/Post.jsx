@@ -74,6 +74,7 @@ export const Post = ({ post }) => {
               onClick={() => {
                 setMenuOpen(!menuOpen);
               }}
+              className="moreHorizon"
             />
             {menuOpen && post.userid === currentUser.id && (
               <button onClick={handleClick}>delete</button>
