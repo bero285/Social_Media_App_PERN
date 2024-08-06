@@ -50,7 +50,6 @@ export default function Update({ setOpenUpdate, user }) {
     e.preventDefault();
     let coverUrl = user.coverPic;
     let profileUrl = user.profilePic;
-    console.log(cover);
     coverUrl = cover ? await upload(cover) : user.coverpic;
     profileUrl = profile ? await upload(profile) : user.profilepic;
     mutation.mutate({ ...text, coverPic: coverUrl, profilePic: profileUrl });

@@ -21,7 +21,14 @@ export const LeftBar = () => {
       <div className="container">
         <div className="menu">
           <div className="user">
-            <img src={currentUser.profilePic} alt="" />
+            <img
+              src={
+                currentUser.profilepic
+                  ? `/upload/${currentUser.profilepic}`
+                  : `/upload/preson.jpg`
+              }
+              alt=""
+            />
             <span>{currentUser.name}</span>
           </div>
           <div className="item">

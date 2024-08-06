@@ -59,13 +59,20 @@ export const Profile = () => {
       <div className="images">
         <img
           // src="https://images.pexels.com/photos/13440765/pexels-photo-13440765.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-          src={`/upload/${data?.coverpic}`}
+          src={
+            data.coverpic
+              ? `/upload/${data?.coverpic}`
+              : `/upload/default-cover.jpg`
+          }
           alt=""
           className="cover"
         />
         <img
           // src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-          src={`/upload/${data?.profilepic}`}
+
+          src={
+            data.coverpic ? `/upload/${data?.profilepic}` : `/upload/person.jpg`
+          }
           alt=""
           className="profilePic"
         />

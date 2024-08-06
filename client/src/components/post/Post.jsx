@@ -57,7 +57,14 @@ export const Post = ({ post }) => {
       <div className="container">
         <div className="user">
           <div className="userInfo">
-            <img src={post.profilePic} alt="" />
+            <img
+              src={
+                post.profilepic
+                  ? `/upload/${post.profilepic}`
+                  : "/upload/person.jpg"
+              }
+              alt=""
+            />
             <div className="details">
               <Link
                 to={`/profile/${post.userid}`}
@@ -101,7 +108,7 @@ export const Post = ({ post }) => {
           </div>
           <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
             <TextsmsOutlinedIcon />
-            12 comments
+            {post?.commentnumber} comments
           </div>
           <div className="item">
             <ShareOutlinedIcon />

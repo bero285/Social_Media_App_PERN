@@ -11,6 +11,7 @@ export const Comments = ({ postId }) => {
       return makeRequest.post("/comments", newComment);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
     },
   });

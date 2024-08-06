@@ -38,7 +38,14 @@ export const NavBar = () => {
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <div className="user">
-          <img src={currentUser.profilePic} alt="" />
+          <img
+            src={
+              currentUser.profilepic
+                ? `/upload/${currentUser?.profilepic}`
+                : `/upload/person.jpg`
+            }
+            alt=""
+          />
           <span>{currentUser.name}</span>
         </div>
       </div>
